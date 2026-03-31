@@ -1,1 +1,23 @@
-backend/main.go
+package main
+
+import (
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+
+	http.HandleFunc("/geofences", createGeofence)
+	http.HandleFunc("/vehicles", createVehicle)
+	http.HandleFunc("/vehicles/location", updateLocation)
+	http.HandleFunc("/ws", wsHandler)
+
+	port := "8080"
+	if value, ok := os.LookupEnv("PORT"); ok {
+		port = value
+	}
+
+	log.Println("Server running on port", port)
+	http.ListenAndServe(":"+port, nil)
+}
